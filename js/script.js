@@ -14,8 +14,7 @@ const canvasSize = 600
 const initialPosition = { x: 270, y: 240, color: "green" }
 
 let snake = [initialPosition]
-let direction
-let loopId
+let direction, loopId, isGameOver
 
 const generateRandomNumber = (min, max) =>
     Math.round(Math.random() * (max - min) + min)
@@ -143,6 +142,8 @@ const checkCollision = () => {
 const gameOver = () => {
     direction = undefined
     clearTimeout(loopId)
+    isGameOver = true
+
 
     menuScreen.style.display = "flex"
     finalScoreDisplay.innerText = scoreDisplay.innerText
@@ -165,6 +166,8 @@ const gameLoop = () => {
 
 
 document.addEventListener("keydown", ({ key }) => {
+     if (isGameOver) return;
+
     const lowerCaseKey = key.toLowerCase();
 
     if ((lowerCaseKey === "arrowright" || lowerCaseKey === "d") && direction !== "left") {
@@ -187,6 +190,7 @@ playButton.addEventListener("click", () => {
     canvas.style.filter = "none"
     snake = [{ x: 270, y: 240, color: "green" }]
     direction = undefined
+    isGameOver = false
     gameLoop()
 })
 
